@@ -10,12 +10,12 @@ import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-// import org.apache.cordova.PluginResult;  
+import org.apache.cordova.PluginResult;  
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.widget.Toast;
+
 import android.os.Environment;
 
 /**
@@ -27,28 +27,20 @@ public class Compress extends CordovaPlugin {
      * instance variable.
      */
     @Override
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) 
-    {
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
     }
 
 	@Override
 	public boolean execute(String action, JSONArray rawArgs, CallbackContext callbackContext) throws JSONException {
-    	if (action.equals("zip")) {
-
-		Toast.makeText(this.cordova.getActivity(), "Text", Toast.LENGTH_LONG)
-    .show();
-		boolean stat = false;  
-			callbackContext.success();  
-				stat = true;
-		}
-				return true;
-		/*String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+    
+		boolean stat = false;
+		String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String targetPath = ExternalStorageDirectoryPath + "/RADMS/attachments";
 		try {
-			FileOutputStream fos = new FileOutputStream(ExternalStorageDirectoryPath + "/RADMS/attachments.zip");
+			FileOutputStream fos = new FileOutputStream(ExternalStorageDirectoryPath + "/RADMS/exportedData.zip");
 			ZipOutputStream zos = new ZipOutputStream(fos);
-    		if (action.equals("addDirToZipArchive")) {
+    		if (action.equals("zip")) {
 				addDirToZipArchive(zos, new File(targetPath), null);
 				zos.flush();
 				fos.flush();
@@ -64,7 +56,7 @@ public class Compress extends CordovaPlugin {
             callbackContext.error(""+e);  
 			stat = false;
 		}
-		return stat;*/
+		return stat;
 	}
 
 	public static void addDirToZipArchive(ZipOutputStream zos, File fileToZip,
@@ -96,5 +88,4 @@ public class Compress extends CordovaPlugin {
 			fis.close();
 		}
 	}
-
 }
