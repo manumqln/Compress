@@ -2,21 +2,25 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="com.custom.compress"
+    id="com.custom.compress.Compress"
     version="0.2">
     <name>Compress</name>
     <description>Cordova Compress Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,compress</keywords>
 
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
     <js-module src="www/Compress.js" name="Compress">
-        <clobbers target="window.plugins.Compress" />
+        <clobbers target="window.plugins.compress" />
     </js-module>
 
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="Camera">
+            <feature name="Compress">
                 <param name="android-package" value="com.custom.compress.Compress"/>
             </feature>
         </config-file>

@@ -10,7 +10,6 @@ import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-import com.custom.compress.MainActivity;
 // import org.apache.cordova.PluginResult;  
 
 import org.json.JSONArray;
@@ -31,9 +30,6 @@ public class Compress extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) 
     {
         super.initialize(cordova, webView);
-
-        // Set the Activity.
-        this.activity = (MainActivity) cordova.getActivity();
     }
 
 	@Override
@@ -45,8 +41,8 @@ public class Compress extends CordovaPlugin {
 		boolean stat = false;  
 			callbackContext.success();  
 				stat = true;
-				return true;
 		}
+				return true;
 		/*String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String targetPath = ExternalStorageDirectoryPath + "/RADMS/attachments";
 		try {
