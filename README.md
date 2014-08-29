@@ -1,0 +1,4 @@
+Compress
+========
+
+Cordova Compress Plugin
