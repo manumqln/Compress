@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="com.custom.compress"
+    version="0.2">
+    <name>Compress</name>
+    <description>Cordova Compress Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,compress</keywords>
+
+    <js-module src="www/Compress.js" name="Compress">
+        <clobbers target="window.plugins.Compress" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Camera">
+                <param name="android-package" value="com.custom.compress.Compress"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+        </config-file>
+
+        <source-file src="src/android/Compress.java" target-dir="src/com/custom/compress" />
+
+     </platform>
+
+</plugin>
