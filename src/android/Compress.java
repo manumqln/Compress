@@ -15,13 +15,14 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.widget.Toast;
 import android.os.Environment;
 
 /**
  * Class for compress a data.
  */
 public class Compress extends CordovaPlugin {
+	private JSONArray dirNames;
 	/** 
      * Override the plugin initialise method and set the Activity as an 
      * instance variable.
@@ -33,14 +34,18 @@ public class Compress extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray rawArgs, CallbackContext callbackContext) throws JSONException {
-    
 		boolean stat = false;
+		this.dirNames = rawArgs;
 		String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		String targetPath = ExternalStorageDirectoryPath + "/RADMS/attachments";
 		try {
-			FileOutputStream fos = new FileOutputStream(ExternalStorageDirectoryPath + "/RADMS/exportedData.zip");
-			ZipOutputStream zos = new ZipOutputStream(fos);
     		if (action.equals("zip")) {
+				String targetPath = ExternalStorageDirectoryPath + "/RADMS/attachments/";
+				File zipFile = new File(ExternalStorageDirectoryPath + "/RADMS", "exportdata.zip");
+				if (zipFile.exists()) {
+					zipFile.delete();
+				} 
+				FileOutputStream fos = new FileOutputStream(ExternalStorageDirectoryPath + "/RADMS/exportdata.zip");
+				ZipOutputStream zos = new ZipOutputStream(fos);
 				addDirToZipArchive(zos, new File(targetPath), null);
 				zos.flush();
 				fos.flush();
@@ -59,15 +64,22 @@ public class Compress extends CordovaPlugin {
 		return stat;
 	}
 
-	public static void addDirToZipArchive(ZipOutputStream zos, File fileToZip,
-			String parrentDirectoryName) throws Exception {
-		if (fileToZip == null || !fileToZip.exists()) {
-			return;
-		}
-
+	public static void addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parentDirectoryName) throws Exception {
 		String zipEntryName = fileToZip.getName();
-		if (parrentDirectoryName != null && !parrentDirectoryName.isEmpty()) {
-			zipEntryName = parrentDirectoryName + "/" + fileToZip.getName();
+		if (parentDirectoryName != null && !parentDirectoryName.isEmpty()) {
+			// if(parentDirectoryName)
+			zipEntryName = parentDirectoryName + "/" + fileToZip.getName();
+			boolean flag = false;
+			for (String dirName : dirNames) {
+				Toast.makeText(this.cordova.getActivity(), dirName+" - "+zipEntryName, Toast.LENGTH_LONG).show();
+				if(!dirName.equalsIgnoreCase(zipEntryName)) {
+					flag = true;
+					break;
+				}
+			}
+			if(flag) {
+				return;
+			}
 		}
 
 		if (fileToZip.isDirectory()) {
@@ -75,7 +87,8 @@ public class Compress extends CordovaPlugin {
 			for (File file : fileToZip.listFiles()) {
 				addDirToZipArchive(zos, file, zipEntryName);
 			}
-		} else {
+		} 
+		else {
 			System.out.println("   " + zipEntryName);
 			byte[] buffer = new byte[1024];
 			FileInputStream fis = new FileInputStream(fileToZip);
