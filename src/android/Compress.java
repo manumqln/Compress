@@ -22,7 +22,7 @@ import android.os.Environment;
  * Class for compress a data.
  */
 public class Compress extends CordovaPlugin {
-	private JSONArray dirNames;
+	private static JSONArray dirNames;
 	/** 
      * Override the plugin initialise method and set the Activity as an 
      * instance variable.
@@ -64,32 +64,31 @@ public class Compress extends CordovaPlugin {
 		return stat;
 	}
 
-	public static void addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parentDirectoryName) throws Exception {
+	public void addDirToZipArchive(ZipOutputStream zos, File fileToZip, String parentDirectoryName) throws Exception {
 		String zipEntryName = fileToZip.getName();
+		boolean flag = false;
 		if (parentDirectoryName != null && !parentDirectoryName.isEmpty()) {
-			// if(parentDirectoryName)
 			zipEntryName = parentDirectoryName + "/" + fileToZip.getName();
-			boolean flag = false;
-			for (String dirName : dirNames) {
-				Toast.makeText(this.cordova.getActivity(), dirName+" - "+zipEntryName, Toast.LENGTH_LONG).show();
-				if(!dirName.equalsIgnoreCase(zipEntryName)) {
-					flag = true;
-					break;
-				}
-			}
-			if(flag) {
-				return;
-			}
 		}
 
 		if (fileToZip.isDirectory()) {
-			System.out.println("+" + zipEntryName);
+			if(parentDirectoryName != null) {
+				for (int i = 0; i < dirNames.length(); i++) {
+					if(dirNames.getString(i).equals(fileToZip.getName())) {
+						Toast.makeText(this.cordova.getActivity(), fileToZip.getName(), Toast.LENGTH_LONG).show();
+						flag = true;
+						break;
+					}
+				}
+				if(!flag) {
+					return;
+				}
+			}
 			for (File file : fileToZip.listFiles()) {
 				addDirToZipArchive(zos, file, zipEntryName);
 			}
 		} 
 		else {
-			System.out.println("   " + zipEntryName);
 			byte[] buffer = new byte[1024];
 			FileInputStream fis = new FileInputStream(fileToZip);
 			zos.putNextEntry(new ZipEntry(zipEntryName));
