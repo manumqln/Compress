@@ -6,34 +6,47 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-// import org.apache.cordova.PluginResult;  
 import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import com.custom.compress.MainActivity;
+// import org.apache.cordova.PluginResult;  
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import android.widget.Toast;
 import android.os.Environment;
 
 /**
  * Class for compress a data.
  */
 public class Compress extends CordovaPlugin {
-	@override
-	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        // the plugin doesn't have direct access to the application context,
-        // so you have to get it first
-        Context context = this.cordova.getActivity().getApplicationContext();
+	/** 
+     * Override the plugin initialise method and set the Activity as an 
+     * instance variable.
+     */
+    @Override
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) 
+    {
+        super.initialize(cordova, webView);
+
+        // Set the Activity.
+        this.activity = (MainActivity) cordova.getActivity();
     }
 
 	@Override
 	public boolean execute(String action, JSONArray rawArgs, CallbackContext callbackContext) throws JSONException {
+    	if (action.equals("zip")) {
+
+		Toast.makeText(this.cordova.getActivity(), "Text", Toast.LENGTH_LONG)
+    .show();
 		boolean stat = false;  
 			callbackContext.success();  
 				stat = true;
 				return true;
+		}
 		/*String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		String targetPath = ExternalStorageDirectoryPath + "/RADMS/attachments";
 		try {

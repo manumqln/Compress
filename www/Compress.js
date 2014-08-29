@@ -1,8 +1,9 @@
 var Compress = function(){} 
 Compress.prototype.zip = function(successCallback, errorCallback)  
 {  
-	try{         
-		cordova.exec(successCallback, errorCallback, 'Compress', 'addDirToZipArchive', []);  
+	try{    
+	alert(55);     
+		cordova.exec(successCallback, errorCallback, 'Compress', 'zip', []);  
 	}  
 	catch(e){}  
 };  
