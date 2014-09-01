@@ -1,4 +1,4 @@
 Compress
 ========
 
-Cordova Compress Plugin
+Cordova Compress Plugin for Android only
