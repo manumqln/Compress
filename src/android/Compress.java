@@ -15,7 +15,6 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import android.widget.Toast;
 import android.os.Environment;
 
 /**
@@ -51,6 +50,11 @@ public class Compress extends CordovaPlugin {
 				fos.flush();
 				zos.close();
 				fos.close();
+				// Delete text file after zipping
+				File textFile = new File(ExternalStorageDirectoryPath + "/RADMS/attachments", "crashDetails.txt");
+				if (textFile.exists()) {
+					textFile.delete();
+				}
 				callbackContext.success();  
 				stat = true;
 			}
